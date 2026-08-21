@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#26301f">
+<title>Semaine végé — 2 personnes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,9..144,300&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3E8;
+    --card:#FBFBF4;
+    --ink:#242E1C;
+    --ink-soft:#5C6A4C;
+    --ink-faint:#8A9377;
+    --line:rgba(36,46,28,.12);
+    --line-soft:rgba(36,46,28,.07);
+    --olive:#7C8A3B;      /* PST */
+    --bean:#9A6438;       /* légumineuses */
+    --egg:#D2A02F;        /* œuf */
+    --alt:#6F7C86;        /* alternatives transformées */
+    --coral:#CE7B57;      /* Solmon */
+    --tomato:#B8422C;     /* plaisir */
+    --oil:#C69A2C;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 64px;
+  }
+  .wrap{max-width:540px;margin:0 auto;padding:0 18px}
+
+  /* ---------- Header ---------- */
+  header{padding:34px 0 20px}
+  .eyebrow{
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--olive);font-weight:600;
+  }
+  h1{
+    font-family:"Fraunces",serif;
+    font-weight:500;font-size:38px;line-height:1.02;
+    letter-spacing:-.01em;margin:8px 0 14px;
+    font-optical-sizing:auto;
+  }
+  .thesis{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    font-size:14px;color:var(--ink-soft);
+  }
+  .thesis .plus{color:var(--ink-faint);font-weight:500}
+  .thesis b{color:var(--ink);font-weight:600}
+  .meta{
+    margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;
+    font-size:13px;color:var(--ink-soft);
+  }
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta .dot-oil{width:7px;height:7px;border-radius:50%;background:var(--oil)}
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    padding:10px 0 12px;margin-bottom:4px;
+    display:flex;gap:6px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .tab{
+    flex:1;font-family:inherit;font-size:14px;font-weight:600;
+    color:var(--ink-soft);background:transparent;
+    border:1px solid var(--line);border-radius:999px;
+    padding:9px 0;cursor:pointer;transition:all .18s ease;
+    letter-spacing:.01em;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--ink);color:var(--paper);border-color:var(--ink);
+  }
+  .tab:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+
+  .panel{display:none;animation:fade .3s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---------- Batch banner ---------- */
+  .batch{
+    background:linear-gradient(135deg,#2C3720,#3E4B2C);
+    color:#EFF2E2;border-radius:var(--radius);
+    padding:16px 18px;margin:14px 0 18px;
+    position:relative;overflow:hidden;
+  }
+  .batch::after{
+    content:"";position:absolute;right:-30px;top:-30px;
+    width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle,rgba(198,154,44,.28),transparent 70%);
+  }
+  .batch .lbl{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--oil);font-weight:600;
+  }
+  .batch h3{font-family:"Fraunces",serif;font-weight:500;font-size:20px;margin:3px 0 6px}
+  .batch p{font-size:13px;color:#CBD3B8;line-height:1.45}
+
+  /* ---------- Day cards ---------- */
+  .day{
+    background:var(--card);border:1px solid var(--line-soft);
+    border-radius:var(--radius);padding:15px 16px 6px;margin-bottom:12px;
+  }
+  .day-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding-bottom:10px;margin-bottom:4px;border-bottom:1px solid var(--line-soft);
+  }
+  .day-name{font-family:"Fraunces",serif;font-weight:500;font-size:22px;letter-spacing:-.01em}
+  .day-tag{
+    font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--olive);font-weight:600;
+  }
+  .meal{
+    display:flex;gap:11px;padding:11px 0;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .meal:last-child{border-bottom:none}
+  .m-dot{
+    flex:none;width:9px;height:9px;border-radius:50%;margin-top:6px;
+    box-shadow:0 0 0 3px rgba(255,255,255,.6);
+  }
+  .m-body{flex:1;min-width:0}
+  .m-when{
+    font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;
+  }
+  .m-dish{font-size:15px;line-height:1.35;margin-top:2px;color:var(--ink)}
+  .m-dish .accent{color:var(--tomato);font-weight:600}
+  .pills{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+  .pill{
+    font-size:11px;font-weight:600;letter-spacing:.02em;
+    padding:2.5px 8px;border-radius:999px;
+    border:1px solid var(--line);color:var(--ink-soft);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .pill.time{color:var(--olive);border-color:rgba(124,138,59,.4);background:rgba(124,138,59,.08)}
+  .pill.restes{color:var(--ink-faint)}
+  .pill.restes::before{content:"↺";font-size:12px;line-height:1}
+
+  /* ---------- Legend ---------- */
+  .legend{
+    background:var(--card);border:1px solid var(--line-soft);
+    border-radius:var(--radius);padding:14px 16px;margin:6px 0 20px;
+  }
+  .legend h4{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-bottom:10px;
+  }
+  .legend-grid{display:flex;flex-wrap:wrap;gap:8px 16px}
+  .leg{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft)}
+  .leg .d{width:9px;height:9px;border-radius:50%}
+
+  /* ---------- Reminders ---------- */
+  .notes{margin:4px 0 8px}
+  .notes h4{
+    font-family:"Fraunces",serif;font-weight:500;font-size:17px;
+    margin:22px 0 10px;
+  }
+  .note{
+    display:flex;gap:11px;padding:11px 14px;margin-bottom:8px;
+    background:var(--card);border:1px solid var(--line-soft);
+    border-radius:12px;font-size:13.5px;line-height:1.45;color:var(--ink-soft);
+  }
+  .note .k{flex:none;font-size:16px;line-height:1.3}
+  .note b{color:var(--ink);font-weight:600}
+
+  /* ---------- Shopping ---------- */
+  .shop-intro{font-size:13px;color:var(--ink-soft);margin:14px 0 16px;line-height:1.5}
+  .rayon{margin-bottom:18px}
+  .rayon-head{
+    display:flex;align-items:center;gap:9px;margin-bottom:8px;
+  }
+  .rayon-head .ico{font-size:17px}
+  .rayon-head h3{
+    font-family:"Fraunces",serif;font-weight:500;font-size:18px;letter-spacing:-.01em;
+  }
+  ul.items{list-style:none}
+  ul.items li{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:9px 2px;border-bottom:1px solid var(--line-soft);
+    font-size:14.5px;line-height:1.4;
+  }
+  ul.items li:last-child{border-bottom:none}
+  .chk{
+    flex:none;width:17px;height:17px;margin-top:2px;
+    border:1.5px solid var(--line);border-radius:5px;
+    cursor:pointer;transition:all .15s ease;position:relative;
+    background:var(--card);
+  }
+  .chk[data-on="1"]{background:var(--olive);border-color:var(--olive)}
+  .chk[data-on="1"]::after{
+    content:"";position:absolute;left:5px;top:1.5px;
+    width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .chk:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+  .it-txt{flex:1;transition:all .15s ease}
+  .it-txt .q{color:var(--ink-faint);font-size:13px}
+  li[data-done="1"] .it-txt{color:var(--ink-faint);text-decoration:line-through}
+  .it-note{font-size:12px;color:var(--ink-faint);font-style:italic}
+
+  .pantry .rayon-head h3{color:var(--ink-soft)}
+  .pantry ul.items li{opacity:.9}
+
+  footer{
+    text-align:center;font-size:12px;color:var(--ink-faint);
+    padding:26px 0 4px;
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Programme · 2 personnes</div>
+    <h1>La semaine<br>au vert</h1>
+    <div class="thesis">
+      <b>Huile d'olive</b><span class="plus">+</span><b>protéine</b><span class="plus">+</span><b>féculent</b><span class="plus">+</span><b>légume</b>
+    </div>
+    <div class="meta">
+      <span><span class="dot-oil"></span>Batch dimanche ~1h45</span>
+      <span>Chili · 2 services</span>
+      <span>Oméga-3 · 2×/sem</span>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="p-week" id="t-week">La semaine</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-shop" id="t-shop">Les courses</button>
+  </div>
+
+  <!-- ============ SEMAINE ============ -->
+  <section class="panel active" id="p-week" role="tabpanel" aria-labelledby="t-week">
+
+    <div class="batch">
+      <div class="lbl">Dimanche · session batch</div>
+      <h3>~1h45 pour lancer la semaine</h3>
+      <p>Riz, chili de haricots rouges, PST fajita, sauté de légumes. Le chili et les patates au four tournent seuls pendant que tu montes le reste.</p>
+    </div>
+
+    <!-- DIMANCHE -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Dimanche</span><span class="day-tag">Batch cooking</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--olive)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Riz + PST fajita + légumes sautés</div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--bean)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">Chili de haricots rouges + patates au four</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUNDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Lundi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--olive)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Riz + PST fajita + légumes</div>
+          <div class="pills"><span class="pill restes">restes dim.</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--bean)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">Chili + patates</div>
+          <div class="pills"><span class="pill restes">restes dim.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Mardi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--alt)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Escalope végétale + lentilles (bocal)</div>
+          <div class="pills"><span class="pill time">10 min</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--egg)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">Omelette + salade composée</div>
+          <div class="pills"><span class="pill">🌰 noix</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MERCREDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Mercredi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--bean)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Pois chiches rôtis maison + tomates à la provençale</div>
+          <div class="pills"><span class="pill time">10 min</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--alt)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">Pâtes complètes + lardons végétaux + petits pois + carottes</div>
+          <div class="pills"><span class="pill time">15 min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JEUDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Jeudi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--alt)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Pâtes + lardons + petits pois + carottes</div>
+          <div class="pills"><span class="pill restes">restes mer.</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--olive)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">PST 2<sup>e</sup> marinade (umami soja-gingembre ou kebab) + légumes sautés courgette-brocoli</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDREDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Vendredi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--olive)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">PST + légumes</div>
+          <div class="pills"><span class="pill restes">restes jeu.</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--tomato)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish"><span class="accent">Pizza</span> (commande) 🍕</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAMEDI -->
+    <div class="day">
+      <div class="day-head"><span class="day-name">Samedi</span></div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--coral)"></span>
+        <div class="m-body">
+          <div class="m-when">Déjeuner</div>
+          <div class="m-dish">Solmon tranché + quinoa (bocal) + tomates</div>
+          <div class="pills"><span class="pill time">5 min</span><span class="pill">huile de lin crue</span></div>
+        </div>
+      </div>
+      <div class="meal">
+        <span class="m-dot" style="background:var(--alt)"></span>
+        <div class="m-body">
+          <div class="m-when">Dîner</div>
+          <div class="m-dish">Fajitas kebab Planted</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <h4>Rotation des protéines</h4>
+      <div class="legend-grid">
+        <span class="leg"><span class="d" style="background:var(--olive)"></span>PST</span>
+        <span class="leg"><span class="d" style="background:var(--bean)"></span>Légumineuses</span>
+        <span class="leg"><span class="d" style="background:var(--egg)"></span>Œuf</span>
+        <span class="leg"><span class="d" style="background:var(--alt)"></span>Alternatives</span>
+        <span class="leg"><span class="d" style="background:var(--coral)"></span>Solmon</span>
+        <span class="leg"><span class="d" style="background:var(--tomato)"></span>Plaisir</span>
+      </div>
+    </div>
+
+    <div class="notes">
+      <h4>À garder en tête</h4>
+      <div class="note"><span class="k">🫒</span><div><b>Huile de lin :</b> toujours crue, jamais chauffée. Ajoutée au moment de servir, conservée au frigo dans une bouteille opaque.</div></div>
+      <div class="note"><span class="k">🔥</span><div><b>PST :</b> réhydrater au bouillon → bien essorer → mariner → sécher → saisir à feu vif dans l'inox, sans remuer, 2-3 min par face.</div></div>
+      <div class="note"><span class="k">🌰</span><div><b>Oméga-3 :</b> noix le mardi soir, huile de lin le samedi midi. Au moins 2×/semaine.</div></div>
+      <div class="note"><span class="k">🍅</span><div><b>Jeudi :</b> nouvelle marinade PST + légumes différents (courgette-brocoli) pour ne pas refaire le dimanche à l'identique.</div></div>
+    </div>
+
+  </section>
+
+  <!-- ============ COURSES ============ -->
+  <section class="panel" id="p-shop" role="tabpanel" aria-labelledby="t-shop">
+
+    <p class="shop-intro">Quantités pour 2 personnes sur la semaine. Coche au fur et à mesure. Le dernier bloc est le placard — à vérifier avant de racheter.</p>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🥬</span><h3>Fruits &amp; légumes</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Poivrons <span class="q">· 2</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Oignons <span class="q">· 2</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Ail <span class="q">· 2-3 gousses</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Courgettes <span class="q">· 2</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Brocoli <span class="q">· 1</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Carottes <span class="q">· 2</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Tomates fraîches <span class="q">· 7-9 (provençale + samedi)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Salade / crudités <span class="q">· au choix (mardi soir)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Pommes de terre <span class="q">· 600-700 g</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🥫</span><h3>Conserves &amp; bocaux</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Haricots rouges <span class="q">· 2 boîtes (400 g)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Tomates concassées <span class="q">· 1 boîte (400 g) — chili</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Pois chiches <span class="q">· 1 grosse boîte (480 g) ou 2 petites</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Lentilles cuites <span class="q">· 1 bocal (400 g)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Quinoa cuit <span class="q">· 1 bocal (250 g)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Tomates pelées <span class="q">· 1 boîte — provençale rapide</span> <span class="it-note">optionnel</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🌾</span><h3>Féculents, épices &amp; marinades</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Riz basmati / semi-complet <span class="q">· 200 g</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Pâtes complètes <span class="q">· 160-180 g</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Herbes de Provence</span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Épices chili <span class="q">· cumin, paprika doux + fumé, chili, piment</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Marinade fajita <span class="q">· dimanche</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Marinade PST jeudi <span class="q">· soja + gingembre, ou mix kebab</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🧊</span><h3>Protéines végétales</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">PST sec <span class="q">· 200-240 g (2 marinades)</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Escalopes végétales <span class="q">· 2</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Lardons végétaux <span class="q">· 100-120 g</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Petits pois surgelés <span class="q">· 200 g</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Fajitas kebab Planted <span class="q">· 1 paquet</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🥚</span><h3>Frais</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Œufs <span class="q">· 5-6</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Solmon (Ocean Kiss) <span class="q">· 150-180 g</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon">
+      <div class="rayon-head"><span class="ico">🍽️</span><h3>Autres</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Wraps / tortillas <span class="q">· 4-6, si non inclus dans le Planted</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Pizza <span class="q">· commande vendredi — pas d'achat</span></span></li>
+      </ul>
+    </div>
+
+    <div class="rayon pantry">
+      <div class="rayon-head"><span class="ico">🫒</span><h3>Placard — à vérifier</h3></div>
+      <ul class="items">
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Huile d'olive <span class="q">· Bioléane</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Huile de lin <span class="q">· crue uniquement</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Noix <span class="q">· une poignée</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Bouillon de légumes <span class="q">· réhydratation PST</span></span></li>
+        <li><span class="chk" role="checkbox" tabindex="0"></span><span class="it-txt">Sel, poivre</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <footer>Modulable selon le placard · Montpellier</footer>
+</div>
+
+<script>
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  const panels = {'t-week':'p-week','t-shop':'p-shop'};
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      tabs.forEach(t=>t.setAttribute('aria-selected','false'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(panels[tab.id]).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  // Checkboxes (in-memory only)
+  function toggle(chk){
+    const on = chk.getAttribute('data-on')==='1';
+    chk.setAttribute('data-on', on?'0':'1');
+    chk.closest('li').setAttribute('data-done', on?'0':'1');
+  }
+  document.querySelectorAll('.chk').forEach(chk=>{
+    chk.addEventListener('click',()=>toggle(chk));
+    chk.addEventListener('keydown',e=>{
+      if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle(chk);}
+    });
+  });
+</script>
+</body>
+</html>
